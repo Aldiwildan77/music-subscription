@@ -99,7 +99,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 ## <b>TODO</b>
 
 * [x] Setup your Environment of this project by your chosen language
-* [ ] Prepare the actors services (Controller, Model, Route)
+* [x] Prepare the actors services (Controller, Model, Route)
   * [ ] Customer
     * [ ] Register
     * [ ] Topup
