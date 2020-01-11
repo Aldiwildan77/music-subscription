@@ -73,6 +73,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
   * total
 
 ## <b>API</b>
+
 ```
 -> /customer/register
   {
@@ -92,10 +93,12 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
     "total": ""
   }
 ```
+
 > ### You can add a new API for exploration but you `must` implement the API above
 
 ## <b>TODO</b>
-* [ ] Setup your Environment of this project by your chosen language
+
+* [x] Setup your Environment of this project by your chosen language
 * [ ] Prepare the actors services (Controller, Model, Route)
   * [ ] Customer
     * [ ] Register
@@ -112,6 +115,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 * [ ] Do Testing
 
 ## <b>TASK</b>
+
 ```
 1. Fork This Repository
 2. Follow the project convention
@@ -120,6 +124,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 ```
 
 ## <b>NOTES</b>
+
 ``` 
 1. `Folder structure` can be modified by your own  
 2. Implement `REST API` will be a score plus
@@ -129,7 +134,9 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 ```
 
 ## <b>HOW TO SUBMIT</b>
+
 Please follow the [CONTRIBUTING](https://github.com/Aldiwildan77/music-subscription/blob/master/CONTRIBUTING.md)
 
 ## This is not the only way to join with us
+
 ## But this is the one and only way to instantly pass
