@@ -106,10 +106,10 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 
 * [x] Setup your Environment of this project by your chosen language
 * [x] Prepare the actors services (Controller, Model, Route)
-  * [ ] Customer
+  * [x] Customer
     * [x] Register
-    * [ ] Topup
-    * [ ] Debit
+    * [x] Topup
+    * [x] Debit
   * [ ] Subscription
     * [ ] Create Subscription
     * [ ] Read Subscription

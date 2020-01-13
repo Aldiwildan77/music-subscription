@@ -24,7 +24,7 @@ const customerController = {
   getSingleCustomerById: (req, res) => {
     let id = req.params.id;
     let data = Customer.getSingleCustomerById(id);
-    if (data.length == 0) {
+    if (!data) {
       return restReturn(res, 404, true, {
         errorMessage: "Customer tidak ditemukan"
       });
@@ -34,18 +34,37 @@ const customerController = {
   topupCustomer: (req, res) => {
     let { customer_id, amount } = req.body;
     let beforeUpdate = Customer.getSingleCustomerById(customer_id);
-    if (beforeUpdate.length == 0) {
+    if (!beforeUpdate) {
       return restReturn(res, 404, true, {
         errorMessage: "Customer tidak ditemukan"
       });
     }
-    let beforeUpdateBalance =
-      beforeUpdate.amount == undefined ? 0 : beforeUpdate.amount;
+    let beforeUpdateBalance = beforeUpdate.balance;
     let updateData = {
       balance: beforeUpdateBalance + amount
     };
     Customer.updateCustomer(customer_id, updateData);
-    return restReturn(res, 201, false);
+    return restReturn(res, 200, false);
+  },
+  debitCustomer: (req, res) => {
+    let { customer_id, amount } = req.body;
+    let beforeUpdate = Customer.getSingleCustomerById(customer_id);
+    if (!beforeUpdate) {
+      return restReturn(res, 404, true, {
+        errorMessage: "Customer tidak ditemukan"
+      });
+    }
+    let beforeUpdateBalance = beforeUpdate.balance;
+    let updateData = {
+      balance: beforeUpdateBalance - amount
+    };
+    if (updateData.balance < 0) {
+      return restReturn(res, 400, true, {
+        errorMessage: "Saldo tidak cukup"
+      });
+    }
+    Customer.updateCustomer(customer_id, updateData);
+    return restReturn(res, 200, false);
   }
 };
 

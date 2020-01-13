@@ -6,11 +6,6 @@ const customers = [
   },
   {
     name: "Fakhri2",
-    email: "fakhriimaduddin19@gmail.com",
-    phone: "081234106350"
-  },
-  {
-    name: "Fakhri2",
     email: "tes@gmail.com",
   },
   {

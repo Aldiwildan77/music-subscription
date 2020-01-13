@@ -11,7 +11,7 @@ const customerModel = {
     });
   },
   getAllCustomer: () => Customer,
-  getSingleCustomerById: id => Customer.filter(e => e.id == id),
+  getSingleCustomerById: id => Customer.filter(e => e.id == id)[0],
   updateCustomer: (id, updateData) => {
     Customer.forEach(e => {
       if(e.id == id){

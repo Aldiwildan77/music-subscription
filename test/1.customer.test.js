@@ -7,6 +7,7 @@ const expect = chai.expect;
 const requester = chai.request(app).keepOpen();
 const Customer = require("./test-cases/customerRegister");
 const CustomerTopup = require("./test-cases/customerTopup");
+const CustomerDebit = require("./test-cases/customerDebit");
 const chaiUtil = require("../src/utils/chai");
 const { isRegisterDataFull, isValidEmail } = require("../src/utils/index");
 const validCustomerData = ["id", "name", "email", "phone", "balance"];
@@ -56,7 +57,7 @@ describe("Customer", () => {
       let res = await chaiUtil.get(requester, "/customer/1");
       expect(res).to.have.status(200);
       expect(res.body).to.have.property("error", false);
-      expect(res.body.message[0]).to.have.all.keys(validCustomerData);
+      expect(res.body.message).to.have.all.keys(validCustomerData);
     });
     it("should return error if no customer found", async () => {
       let res = await chaiUtil.get(requester, "/customer/0");
@@ -69,27 +70,63 @@ describe("Customer", () => {
     });
   });
   describe("POST /customer/topup", async () => {
-      it("should increase the customer's balance", async () => {        
-        let data = CustomerTopup[0];
-        let beforeTopup = await chaiUtil.get(requester, `/customer/${CustomerTopup[0].customer_id}`);
-        let res = await chaiUtil.post(requester, "/customer/topup", data);
-        let afterTopup = await chaiUtil.get(requester, `/customer/${CustomerTopup[0].customer_id}`);
-        let balanceAfterTop = afterTopup.body.message[0].balance;
-        let balanceBeforeTop = beforeTopup.body.message[0].balance;
-        let balanceDiff = balanceAfterTop - balanceBeforeTop;
-        expect(res).to.have.status(201);
-        expect(res).to.have.property("error", false);
-        expect(balanceDiff).to.equal(data.amount);
-      });
-      it("should return error if no customer found", async () => {
-        let data = CustomerTopup[1];
-        let res = await chaiUtil.post(requester, "/customer/topup", data);
-        expect(res).to.have.status(404);
-        expect(res.body).to.have.property("error", true);
-        expect(res.body.message).to.have.property(
-          "errorMessage",
-          "Customer tidak ditemukan"
-        );
-      });
+    it("should increase the customer's balance", async () => {
+      let data = CustomerTopup[0];
+      let id = CustomerTopup[0].customer_id;
+      let beforeTopup = await chaiUtil.get(requester, `/customer/${id}`);
+      let res = await chaiUtil.post(requester, "/customer/topup", data);
+      let afterTopup = await chaiUtil.get(requester, `/customer/${id}`);
+      let balanceAfterTopup = afterTopup.body.message.balance;
+      let balanceBeforeTopup = beforeTopup.body.message.balance;
+      let balanceDiff = balanceAfterTopup - balanceBeforeTopup;
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property("error", false);
+      expect(balanceDiff).to.equal(data.amount);
+    });
+    it("should return error if no customer found", async () => {
+      let data = CustomerTopup[1];
+      let res = await chaiUtil.post(requester, "/customer/topup", data);
+      expect(res).to.have.status(404);
+      expect(res.body).to.have.property("error", true);
+      expect(res.body.message).to.have.property(
+        "errorMessage",
+        "Customer tidak ditemukan"
+      );
+    });
+  });
+  describe("POST /customer/debit", async () => {
+    it("should decrease the customer's balance", async () => {
+      let data = CustomerDebit[0];
+      let id = CustomerTopup[0].customer_id;
+      let beforeTopup = await chaiUtil.get(requester, `/customer/${id}`);
+      let res = await chaiUtil.post(requester, "/customer/debit", data);
+      let afterTopup = await chaiUtil.get(requester, `/customer/${id}`);
+      let balanceAfterTopup = afterTopup.body.message.balance;
+      let balanceBeforeTopup = beforeTopup.body.message.balance;
+      let balanceDiff = balanceBeforeTopup - balanceAfterTopup;
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property("error", false);
+      expect(balanceDiff).to.equal(data.amount);
+    });
+    it("should return error if no customer found", async () => {
+      let data = CustomerDebit[1];
+      let res = await chaiUtil.post(requester, "/customer/debit", data);
+      expect(res).to.have.status(404);
+      expect(res.body).to.have.property("error", true);
+      expect(res.body.message).to.have.property(
+        "errorMessage",
+        "Customer tidak ditemukan"
+      );
+    });
+    it("should return error if balance not sufficient to do debit", async () => {
+      let data = CustomerDebit[2];
+      let res = await chaiUtil.post(requester, "/customer/debit", data);
+      expect(res).to.have.status(400);
+      expect(res.body).to.have.property("error", true);
+      expect(res.body.message).to.have.property(
+        "errorMessage",
+        "Saldo tidak cukup"
+      );
+    });
   });
 });
