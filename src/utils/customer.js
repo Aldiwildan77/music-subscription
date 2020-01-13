@@ -1,10 +1,4 @@
 const utils = {
-  restReturn: (res, code, error, message) => {
-    return res.status(code).json({
-      error,
-      message
-    });
-  },
   isRegisterDataFull: (name, email, phone) => {
     if (!name || email == null || !phone) {
       return false;

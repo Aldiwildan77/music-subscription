@@ -1,15 +1,14 @@
-const mocha = require("mocha");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require("../src/app");
 chai.use(chaiHttp);
 const expect = chai.expect;
 const requester = chai.request(app).keepOpen();
-const Customer = require("./test-cases/customerRegister");
-const CustomerTopup = require("./test-cases/customerTopup");
-const CustomerDebit = require("./test-cases/customerDebit");
+const Customer = require("./test-cases/customer/customerRegister");
+const CustomerTopup = require("./test-cases/customer/customerTopup");
+const CustomerDebit = require("./test-cases/customer/customerDebit");
 const chaiUtil = require("../src/utils/chai");
-const { isRegisterDataFull, isValidEmail } = require("../src/utils/index");
+const { isRegisterDataFull, isValidEmail } = require("../src/utils/customer");
 const validCustomerData = ["id", "name", "email", "phone", "balance"];
 describe("Customer", () => {
   describe("POST /customer/register", async () => {
@@ -39,7 +38,7 @@ describe("Customer", () => {
       } else {
         it("should return customerId if no error", async () => {
           let res = await chaiUtil.post(requester, url, Customer[i]);
-          expect(res).to.have.status(200);
+          expect(res).to.have.status(201);
           expect(res.body).to.have.property("error", false);
         });
       }

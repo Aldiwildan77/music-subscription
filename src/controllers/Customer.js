@@ -1,9 +1,6 @@
 const Customer = require("../models/Customer");
-const {
-  restReturn,
-  isRegisterDataFull,
-  isValidEmail
-} = require("../utils/index");
+const { isRegisterDataFull, isValidEmail } = require("../utils/customer");
+const { restReturn } = require("../utils/util")
 const customerController = {
   register: async (req, res) => {
     let { name, email, phone } = req.body;
@@ -15,7 +12,7 @@ const customerController = {
     let latestCustomerId = await Customer.getAllCustomer().length;
     let id = latestCustomerId + 1;
     await Customer.insertCustomer(id, name, email, phone);
-    return restReturn(res, 200, false, { id });
+    return restReturn(res, 201, false, { id });
   },
   getAllCustomer: (req, res) => {
     let data = Customer.getAllCustomer();

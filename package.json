@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node src/app",
     "dev": "nodemon src/app",
-    "test": "mocha -w"
+    "test": "mocha -w -c true"
   },
   "repository": {
     "type": "git",
