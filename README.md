@@ -2,10 +2,12 @@
 
 ![meme-programmer](https://cupheadmemes.com/wp-content/uploads/2018/08/Best-Programming-Memes-80.jpg) 
 
-### DON'T FORGET TO FOLLOW 7 DEADLY CONVENTION, MENTIONED IN THIS REPOSITORIES ON [CONVENTION](https://github.com/Aldiwildan77/music-subscription/blob/master/CONVENTION.md)
+## DON'T FORGET TO FOLLOW 7 DEADLY CONVENTION, MENTIONED IN THIS REPOSITORIES ON [CONVENTION](https://github.com/Aldiwildan77/music-subscription/blob/master/CONVENTION.md)
+
 ### Any code that didn't follow the convention will automatically rejected
 
 ## <b>References</b> 
+
 1. [Example of Project](https://github.com/meong1234/fintech)
 2. [Git](https://try.github.io/)
 3. [CheatSheets](https://devhints.io/)
@@ -14,6 +16,7 @@
 6. [Test Driven Development](https://www.freecodecamp.org/news/test-driven-development-what-it-is-and-what-it-is-not-41fa6bca02a2/)
 
 ## <b>Accepted Weapon</b>
+
 1. NodeJS (Javascript)
 2. Golang
 3. Java
@@ -27,13 +30,15 @@ One day you are thinking of building a music subscription apps that can do non-c
 * Customer can renew a subscription
 
 ## <b>Meet the actor</b>
+
 ```
 1. Customer
-2. Subscription 
+2. Subscription
 3. Transaction
 ```
 
 ## <b>Some Spec</b>
+
 ```
 GIVEN I am unregistered person
 WHEN I register as customer with (name, email, phone)
@@ -43,7 +48,7 @@ GIVEN I am Customer
 WHEN I top-up some amount balance
 THEN Customer balance should be increased
 
-GIVEN I am Customer 
+GIVEN I am Customer
 WHEN I buy a subscription
 THEN Customer balance should be decreased, Transaction recorded as receipt, and return Transaction ID
 
@@ -53,14 +58,15 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 ```
 
 ## <b>Entities</b>
-* Customer: 
+
+* Customer:
   * id
   * name
   * email
   * phone
   * balance
 
-* Subscription 
+* Subscription
   * id
   * name
   * price
@@ -101,7 +107,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 * [x] Setup your Environment of this project by your chosen language
 * [x] Prepare the actors services (Controller, Model, Route)
   * [ ] Customer
-    * [ ] Register
+    * [x] Register
     * [ ] Topup
     * [ ] Debit
   * [ ] Subscription
@@ -110,7 +116,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
     * [ ] Read Subscription By Id
   * [ ] Transaction
     * [ ] Create Transaction
-    * [ ] Read Transaction 
+    * [ ] Read Transaction
     * [ ] Read Transaction By ID
 * [ ] Do Testing
 
@@ -128,7 +134,7 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
 ``` 
 1. `Folder structure` can be modified by your own  
 2. Implement `REST API` will be a score plus
-3. ONLY BUSINESS LOGIC (BACKEND) 
+3. ONLY BUSINESS LOGIC (BACKEND)
 4. Don't forget to update your .gitignore file
 5. Code with your soulmate (Pairing) or do it alone
 ```
