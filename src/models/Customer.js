@@ -10,7 +10,18 @@ const customerModel = {
       balance: 0
     });
   },
-  getAllCustomer: () => Customer
+  getAllCustomer: () => Customer,
+  getSingleCustomerById: id => Customer.filter(e => e.id == id),
+  updateCustomer: (id, updateData) => {
+    Customer.forEach(e => {
+      if(e.id == id){
+        e.name = updateData.name ? updateData.name : e.name,
+        e.email = updateData.email ? updateData.email : e.email,
+        e.phone = updateData.phone ? updateData.phone : e.phone,
+        e.balance = updateData.balance ? updateData.balance : e.balance
+      }
+    })
+  }
 };
 
 module.exports = customerModel;

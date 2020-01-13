@@ -11,18 +11,12 @@ const utils = {
     }
     return true;
   },
-  isValidEmail: function(e) {
+  isValidEmail: (email) => {
     let regex = /(\w|\d)+@(\w|\d)+\.\w+/gi;
-    if (!regex.test(e)) {
+    if (!regex.test(email)) {
       return false;
     }
     return true;
-  },
-  doChaiPost: async (requester, url, data) => {
-    return requester.post(url).send(data);
-  },
-  doChaiGet: async (requester, url, data) => {
-    return requester.get(url).send(data);
   }
 };
 

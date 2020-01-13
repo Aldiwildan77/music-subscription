@@ -1,12 +1,16 @@
 const Customer = require("../models/Customer");
-const { restReturn, isRegisterDataFull, isValidEmail } = require("../utils/index");
+const {
+  restReturn,
+  isRegisterDataFull,
+  isValidEmail
+} = require("../utils/index");
 const customerController = {
   register: async (req, res) => {
-    let { name, email, phone } = req.body;    
+    let { name, email, phone } = req.body;
     if (!isRegisterDataFull(name, email, phone)) {
       return restReturn(res, 400, true, { errorMessage: "Data tidak lengkap" });
-    } else if(!isValidEmail(email)) {
-      return restReturn(res, 400, true, { errorMessage: "Email tidak valid" });      
+    } else if (!isValidEmail(email)) {
+      return restReturn(res, 400, true, { errorMessage: "Email tidak valid" });
     }
     let latestCustomerId = await Customer.getAllCustomer().length;
     let id = latestCustomerId + 1;
@@ -14,7 +18,34 @@ const customerController = {
     return restReturn(res, 200, false, { id });
   },
   getAllCustomer: (req, res) => {
-    return restReturn(res, 200, false, Customer.getAllCustomer());
+    let data = Customer.getAllCustomer();
+    return restReturn(res, 200, false, data);
+  },
+  getSingleCustomerById: (req, res) => {
+    let id = req.params.id;
+    let data = Customer.getSingleCustomerById(id);
+    if (data.length == 0) {
+      return restReturn(res, 404, true, {
+        errorMessage: "Customer tidak ditemukan"
+      });
+    }
+    return restReturn(res, 200, false, data);
+  },
+  topupCustomer: (req, res) => {
+    let { customer_id, amount } = req.body;
+    let beforeUpdate = Customer.getSingleCustomerById(customer_id);
+    if (beforeUpdate.length == 0) {
+      return restReturn(res, 404, true, {
+        errorMessage: "Customer tidak ditemukan"
+      });
+    }
+    let beforeUpdateBalance =
+      beforeUpdate.amount == undefined ? 0 : beforeUpdate.amount;
+    let updateData = {
+      balance: beforeUpdateBalance + amount
+    };
+    Customer.updateCustomer(customer_id, updateData);
+    return restReturn(res, 201, false);
   }
 };
 
