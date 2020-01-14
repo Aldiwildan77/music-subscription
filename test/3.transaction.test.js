@@ -6,7 +6,15 @@ const expect = chai.expect;
 const requester = chai.request(app).keepOpen();
 const chaiUtil = require("../src/utils/chai");
 const Transaction = require("./test-cases/transaction/transactionPayment");
-const validTransactionData = ["id", "customer_id", "subscription_id", "total"];
+const validTransactionData = [
+  "id",
+  "customer_id",
+  "subscription_id",
+  "total",
+  "date_buy",
+  "date_renew",
+  "date_expire"
+];
 describe("Transaction", () => {
   describe("POST /transaction/payment", async () => {
     it("should return transactionId if no error", async () => {
@@ -51,6 +59,23 @@ describe("Transaction", () => {
       expect(res).to.have.status(200);
       expect(res.body).to.have.property("error", false);
       expect(res.body.message).to.be.an("array");
+    });
+  });
+  describe("GET /transaction/{id}", async () => {
+    it("should return transaction data if no error", async () => {
+      let res = await chaiUtil.get(requester, "/transaction/1");
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property("error", false);
+      expect(res.body.message).to.have.all.keys(validTransactionData);
+    });
+    it("should return error if no transaction found", async () => {
+      let res = await chaiUtil.get(requester, "/transaction/0");
+      expect(res).to.have.status(404);
+      expect(res.body).to.have.property("error", true);
+      expect(res.body.message).to.have.property(
+        "errorMessage",
+        "Transaction tidak ditemukan"
+      );
     });
   });
 });

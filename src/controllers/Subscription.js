@@ -3,12 +3,12 @@ const { restReturn } = require("../utils/util");
 const { isCreateDataFull } = require("../utils/subscription");
 
 const subscriptionController = {
-  createSubscription: async (req, res) => {
+  createSubscription: (req, res) => {
     let { name, price, duration } = req.body;
     if (!isCreateDataFull(name, price, duration)) {
       return restReturn(res, 400, true, { errorMessage: "Data tidak lengkap" });
     }
-    let latestSubscriptionId = (await Subscription.getAllSubscription()).length;
+    let latestSubscriptionId = Subscription.getAllSubscription().length;
     let id = latestSubscriptionId + 1;
     let subscriptionInsert = {
       id,
@@ -16,7 +16,7 @@ const subscriptionController = {
       price,
       duration
     };
-    await Subscription.insertSubscription(subscriptionInsert);
+    Subscription.insertSubscription(subscriptionInsert);
     return restReturn(res, 201, false, { id });
   },
   getAllSubscription: (req, res) => {

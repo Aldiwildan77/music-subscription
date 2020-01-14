@@ -8,11 +8,7 @@ const {
 } = require("../utils/util");
 
 const transactionController = {
-  getAllTransaction: (req, res) => {
-    let data = Transaction.getAllTransaction();
-    return restReturn(res, 200, false, data);
-  },
-  createTransaction: async (req, res) => {
+  createTransaction: (req, res) => {
     let { customer_id, subscription_id, total } = req.body;
     if (customer_id == null || subscription_id == null || total == null) {
       return restReturn(res, 400, true, {
@@ -28,7 +24,7 @@ const transactionController = {
         errorMessage: "Customer / subscription tidak ditemukan"
       });
     }
-    let latestTransactionId = (await Transaction.getAllTransaction()).length;
+    let latestTransactionId = Transaction.getAllTransaction().length;
     let id = latestTransactionId + 1;
     let transactionInsert = {
       id,
@@ -39,8 +35,22 @@ const transactionController = {
       date_renew: "-",
       date_expire: calculateExpireDate(subscriptionData.duration)
     };
-    await Transaction.insertTransaction(transactionInsert);
-    return restReturn(res, 201, false, id)
+    Transaction.insertTransaction(transactionInsert);
+    return restReturn(res, 201, false, id);
+  },
+  getAllTransaction: (req, res) => {
+    let data = Transaction.getAllTransaction();
+    return restReturn(res, 200, false, data);
+  },
+  getSingleTransaction: (req, res) => {
+    let { id } = req.params;
+    let data = Transaction.getSingleTransactionById(id);
+    if (!data) {
+      return restReturn(res, 404, true, {
+        errorMessage: "Transaction tidak ditemukan"
+      });
+    }
+    return restReturn(res, 200, false, data);
   }
 };
 

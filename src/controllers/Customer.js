@@ -2,14 +2,14 @@ const Customer = require("../models/Customer");
 const { isRegisterDataFull, isValidEmail } = require("../utils/customer");
 const { restReturn } = require("../utils/util")
 const customerController = {
-  register: async (req, res) => {
+  register: (req, res) => {
     let { name, email, phone } = req.body;
     if (!isRegisterDataFull(name, email, phone)) {
       return restReturn(res, 400, true, { errorMessage: "Data tidak lengkap" });
     } else if (!isValidEmail(email)) {
       return restReturn(res, 400, true, { errorMessage: "Email tidak valid" });
     }
-    let latestCustomerId = await Customer.getAllCustomer().length;
+    let latestCustomerId = Customer.getAllCustomer().length;
     let id = latestCustomerId + 1;
     let customerInsert = {
       id,
@@ -18,7 +18,7 @@ const customerController = {
       phone,
       balance: 0
     }
-    await Customer.insertCustomer(customerInsert);
+    Customer.insertCustomer(customerInsert);
     return restReturn(res, 201, false, { id });
   },
   getAllCustomer: (req, res) => {
