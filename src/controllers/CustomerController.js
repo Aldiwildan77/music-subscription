@@ -12,3 +12,15 @@ exports.register = (req, res) => {
         res.json(model);
     });
 };
+
+
+exports.get_user_info = (req, res) => {
+    Customer.findById(req.params.userId, (err, model) => {
+        if (err)
+            res.send({
+                message: "user not found"
+            });
+
+        res.json(model);
+    });
+};
