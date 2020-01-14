@@ -11,7 +11,14 @@ const customerController = {
     }
     let latestCustomerId = await Customer.getAllCustomer().length;
     let id = latestCustomerId + 1;
-    await Customer.insertCustomer(id, name, email, phone);
+    let customerInsert = {
+      id,
+      name,
+      email,
+      phone,
+      balance: 0
+    }
+    await Customer.insertCustomer(customerInsert);
     return restReturn(res, 201, false, { id });
   },
   getAllCustomer: (req, res) => {

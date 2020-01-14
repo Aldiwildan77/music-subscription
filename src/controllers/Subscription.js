@@ -8,10 +8,15 @@ const subscriptionController = {
     if (!isCreateDataFull(name, price, duration)) {
       return restReturn(res, 400, true, { errorMessage: "Data tidak lengkap" });
     }
-
     let latestSubscriptionId = (await Subscription.getAllSubscription()).length;
     let id = latestSubscriptionId + 1;
-    await Subscription.insertSubscription(id, name, price, duration);
+    let subscriptionInsert = {
+      id,
+      name,
+      price,
+      duration
+    };
+    await Subscription.insertSubscription(subscriptionInsert);
     return restReturn(res, 201, false, { id });
   },
   getAllSubscription: (req, res) => {

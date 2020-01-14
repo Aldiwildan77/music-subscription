@@ -115,8 +115,8 @@ THEN Customer balance should be decreased, Transaction recorded as receipt, and 
     * [x] Read Subscription
     * [x] Read Subscription By Id
   * [ ] Transaction
-    * [ ] Create Transaction
-    * [ ] Read Transaction
+    * [x] Create Transaction
+    * [x] Read Transaction
     * [ ] Read Transaction By ID
 * [ ] Do Testing
 
