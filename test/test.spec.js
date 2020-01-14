@@ -44,6 +44,27 @@ describe('Model', () => {
       })
     })
   })
+
+  describe('subscription', () => {
+    describe('up', () => {
+      it('should be a function', () => {
+        expect(subscription.up).to.be.a('Function')
+      })
+
+      it('should return a promise', () => {
+        const subscriptionUpResult = subscription.up()
+        expect(subscriptionUpResult.then).to.be.a('Function')
+        expect(subscriptionUpResult.catch).to.be.a('Function')
+      })
+
+      it('should create a table name \'subscriptions\'', function * () {
+        yield subscription.up()
+
+        return expect(knex.schema.hasTable('subscriptions'))
+          .to.eventually.be.true
+      })
+    })
+  })
 })
 
 describe('api', () => {
@@ -106,6 +127,57 @@ describe('api', () => {
           .then(r => r.data)
           .then(r => {
             expect(r).to.be.eql({"data":[{"id":1,"name":"AzizFM","email":"aziz.fm@example.com","phone":"6285842345510","balance":"100000.00"}]})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+  })
+
+  describe('subscription', () => {
+    describe('create a new subscription', () => {
+      it('should create a new subscription', (done) => {
+        axios
+          .post('/subscription', {
+            name: 'Baby',
+            price: '20000',
+            duration: 30
+          })
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":{"id":1,"name":"Baby"}})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+
+    describe('get all subscriptions', () => {
+      it('should return all subscriptions', (done) => {
+        axios
+          .get('/subscription')
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":[{"id":1,"name":"Baby","price":"20000","duration":"30"}]})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+
+    describe('get one subscription', () => {
+      it('should return one subscription', (done) => {
+        axios
+          .get('/subscription/1')
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":{"id":1,"name":"Baby","price":"20000","duration":"30"}})
             done()
           })
           .catch(err => {
