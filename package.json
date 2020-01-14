@@ -1,0 +1,26 @@
+{
+  "name": "music-subscription",
+  "version": "1.0.0",
+  "description": "![meme-programmer](https://cupheadmemes.com/wp-content/uploads/2018/08/Best-Programming-Memes-80.jpg)",
+  "main": "App.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhajirmuhajir/music-subscription.git"
+  },
+  "author": "Muhajir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muhajirmuhajir/music-subscription/issues"
+  },
+  "homepage": "https://github.com/muhajirmuhajir/music-subscription#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2"
+  }
+}
