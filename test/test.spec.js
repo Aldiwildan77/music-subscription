@@ -65,6 +65,27 @@ describe('Model', () => {
       })
     })
   })
+
+  describe('transaction', () => {
+    describe('up', () => {
+      it('should be a function', () => {
+        expect(transaction.up).to.be.a('Function')
+      })
+
+      it('should return a promise', () => {
+        const transactionUpResult = transaction.up()
+        expect(transactionUpResult.then).to.be.a('Function')
+        expect(transactionUpResult.catch).to.be.a('Function')
+      })
+
+      it('should create a table name \'transactions\'', function * () {
+        yield transaction.up()
+
+        return expect(knex.schema.hasTable('transactions'))
+          .to.eventually.be.true
+      })
+    })
+  })
 })
 
 describe('api', () => {
@@ -178,6 +199,76 @@ describe('api', () => {
           .then(r => r.data)
           .then(r => {
             expect(r).to.be.eql({"data":{"id":1,"name":"Baby","price":"20000","duration":"30"}})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+  })
+
+  describe('transaction', () => {
+    describe('create a new payment', () => {
+      it('should create a new transaction', (done) => {
+        axios
+          .post('/transaction/payment', {
+            customer_id: 1,
+            subscription_id: 1,
+            total: 20000
+          })
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":{"id":1}})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+
+    describe('renew payment', () => {
+      it('should create a new transaction', (done) => {
+        axios
+          .post('/transaction/payment', {
+            customer_id: 1,
+            subscription_id: 1,
+            total: 20000
+          })
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":{"id":2}})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+
+    describe('get all transactions', () => {
+      it('should return all transactions', (done) => {
+        axios
+          .get('/transaction')
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":[{"id":1,"customer_id":"1","subscription_id":"1","total":"20000.00"},{"id":2,"customer_id":"1","subscription_id":"1","total":"20000.00"}]})
+            done()
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
+    })
+
+    describe('get one transaction', () => {
+      it('should return one transaction', (done) => {
+        axios
+          .get('/transaction/1')
+          .then(r => r.data)
+          .then(r => {
+            expect(r).to.be.eql({"data":{"id":1,"customer_id":"1","subscription_id":"1","total":"20000.00"}})
             done()
           })
           .catch(err => {
