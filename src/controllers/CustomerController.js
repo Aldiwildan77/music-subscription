@@ -24,3 +24,13 @@ exports.get_user_info = (req, res) => {
         res.json(model);
     });
 };
+
+
+exports.top_up = (req, res) => {
+
+};
+
+
+exports.debit = (req, res) => {
+
+};
