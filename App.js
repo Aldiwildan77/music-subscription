@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Customer = require('./src/models/Customer');
+const Subscription = require('./src/models/Subscription');
+const Transaction = require('./src/models/Transaction');
 const bodyParser = require('body-parser');
 const customerRoute = require('./src/routes/customerRoutes');
 
