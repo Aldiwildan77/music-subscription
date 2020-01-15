@@ -19,7 +19,7 @@ exports.register = (req, res) => {
 
 exports.get_user_info = (req, res) => {
     Customer.findById(req.body.id, (err, model) => {
-        if (err)
+        if (err || model == null)
             res.send({
                 message: "user not found"
             });
