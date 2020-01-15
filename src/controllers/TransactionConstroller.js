@@ -2,20 +2,20 @@
 
 const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
-const Custumer = monngoose.model('Custumer');
+const Customer = mongoose.model('Customer');
 const Subscription = mongoose.model('Subscription');
 
 exports.create_transaction = (req, res) => {
-    Custumer.findById(req.body.customer_id, (err, customer) => {
+    Customer.findById(req.body.customer_id, (err, customer) => {
         if (err || customer == null) {
             res.send({
-                message: "404 error not found"
+                message: "field not valid"
             });
         } else {
             Subscription.findById(req.body.subscription_id, (err, subscription) => {
                 if (err || subscription == null) {
                     res.send({
-                        message: "404 error not found"
+                        message: "field not valid"
                     });
                 } else {
                     if (customer.balance < subscription.price) {
@@ -23,24 +23,31 @@ exports.create_transaction = (req, res) => {
                             message: "balance not enough"
                         })
                     } else {
-                        var total = parseInt(customer.balance) - parseInt(subscription.price);
+                        customer.balance -= parseInt(subscription.price);
                         var new_transaction = new Transaction({
                             customer_id: req.body.customer_id,
                             subscription_id: req.body.subscription_id,
-                            total: total
+                            total: subscription.price
                         });
-
-                        new_transaction.save((err, model) => {
+                        customer.save((err, result) => {
                             if (err) {
                                 res.send({
                                     message: "transaction failed"
                                 });
+                            } else {
+                                new_transaction.save((err, model) => {
+                                    if (err) {
+                                        res.send({
+                                            message: "transaction failed"
+                                        });
+                                    }
+                                    res.json({
+                                        message: "transaction success",
+                                        result: model,
+                                        your_balance: result.balance
+                                    })
+                                });
                             }
-
-                            res.json({
-                                message: "transaction success",
-                                detail: model
-                            })
                         });
                     }
                 }
@@ -52,17 +59,17 @@ exports.create_transaction = (req, res) => {
 
 exports.get_all_transaction = (req, res) => {
     Transaction.find({}, (err, models) => {
-        if (err || models.length) {
+        if (err || models.length == 0) {
             res.send({
                 message: "no transaction found"
             })
+        } else {
+            res.json({
+                message: "success",
+                transaction_count: models.length,
+                data: models
+            });
         }
-
-        res.json({
-            message: "success",
-            transaction_count: models.length,
-            data: models
-        });
     });
 }
 
@@ -73,10 +80,11 @@ exports.get_transaction_info = (req, res) => {
             res.send({
                 message: "transaction not found"
             });
+        } else {
+            res.json({
+                message: "success",
+                result: model
+            })
         }
-
-        res.json({
-            data: model
-        })
     });
 }

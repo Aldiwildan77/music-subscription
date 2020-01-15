@@ -6,37 +6,48 @@ const Subscription = mongoose.model('Subscription');
 exports.create_subscription = (req, res) => {
     var subscription = new Subscription(req.body);
     subscription.save((err, model) => {
-        if (err)
-            res.send(err);
-
-        res.json({
-            result: "succes create subscription",
-            data: model
-        });
+        if (err) {
+            res.send({
+                message: "field not valid"
+            });
+        } else {
+            res.json({
+                message: "success create subscription",
+                result: model
+            });
+        }
     });
 };
 
 
 exports.get_all_subscription = (req, res) => {
     Subscription.find({}, (err, models) => {
-        if (err || models.length) {
+        if (err || models.length == 0) {
             res.send({
                 message: "nothing subscription"
             })
+        } else {
+            res.json({
+                message: "success",
+                result_count: models.length,
+                result: models
+            });
         }
-
-        res.json(models);
     });
 };
 
 
 exports.get_subscription_info = (req, res) => {
     Subscription.findById(req.params.id, (err, model) => {
-        if (err) {
+        if (err || model == null) {
             res.send({
                 message: "subscription not found"
             });
+        } else {
+            res.json({
+                message: "success",
+                result: model
+            });
         }
-        res.json(model)
     });
 };
