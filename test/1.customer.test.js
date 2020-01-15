@@ -94,18 +94,15 @@ describe("Customer", () => {
     });
   });
   describe("POST /customer/debit", async () => {
-    it("should decrease the customer's balance", async () => {
+    it("should return error if balance not sufficient to do debit", async () => {
       let data = CustomerDebit[0];
-      let id = CustomerTopup[0].customer_id;
-      let beforeTopup = await chaiUtil.get(requester, `/customer/${id}`);
       let res = await chaiUtil.post(requester, "/customer/debit", data);
-      let afterTopup = await chaiUtil.get(requester, `/customer/${id}`);
-      let balanceAfterTopup = afterTopup.body.message.balance;
-      let balanceBeforeTopup = beforeTopup.body.message.balance;
-      let balanceDiff = balanceBeforeTopup - balanceAfterTopup;
-      expect(res).to.have.status(200);
-      expect(res.body).to.have.property("error", false);
-      expect(balanceDiff).to.equal(data.amount);
+      expect(res).to.have.status(400);
+      expect(res.body).to.have.property("error", true);
+      expect(res.body.message).to.have.property(
+        "errorMessage",
+        "Saldo tidak cukup"
+      );
     });
     it("should return error if no customer found", async () => {
       let data = CustomerDebit[1];
@@ -117,15 +114,18 @@ describe("Customer", () => {
         "Customer tidak ditemukan"
       );
     });
-    it("should return error if balance not sufficient to do debit", async () => {
+    it("should decrease the customer's balance", async () => {
       let data = CustomerDebit[2];
+      let id = CustomerDebit[2].customer_id;
+      let beforeTopup = await chaiUtil.get(requester, `/customer/${id}`);
       let res = await chaiUtil.post(requester, "/customer/debit", data);
-      expect(res).to.have.status(400);
-      expect(res.body).to.have.property("error", true);
-      expect(res.body.message).to.have.property(
-        "errorMessage",
-        "Saldo tidak cukup"
-      );
+      let afterTopup = await chaiUtil.get(requester, `/customer/${id}`);
+      let balanceAfterTopup = afterTopup.body.message.balance;
+      let balanceBeforeTopup = beforeTopup.body.message.balance;
+      let balanceDiff = balanceBeforeTopup - balanceAfterTopup;
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property("error", false);
+      expect(balanceDiff).to.equal(data.amount);
     });
   });
 });

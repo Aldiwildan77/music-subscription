@@ -24,6 +24,13 @@ const transactionController = {
         errorMessage: "Customer / subscription tidak ditemukan"
       });
     }
+    if (customerData.balance < total) {
+      return restReturn(res, 400, true, { errorMessage: "Saldo tidak cukup" });
+    }
+    customerUpdate = {
+      balance: customerData.balance - total
+    };
+    Customer.updateCustomer(customer_id, customerUpdate);
     let latestTransactionId = Transaction.getAllTransaction().length;
     let id = latestTransactionId + 1;
     let transactionInsert = {
@@ -51,6 +58,43 @@ const transactionController = {
       });
     }
     return restReturn(res, 200, false, data);
+  },
+  renewTransaction: (req, res) => {
+    let { id, total } = req.body;
+    if (id == null || total == null) {
+      return restReturn(res, 400, true, {
+        errorMessage: "Data tidak lengkap"
+      });
+    }
+    let currTransData = Transaction.getSingleTransactionById(id);
+    if (!currTransData) {
+      return restReturn(res, 404, true, {
+        errorMessage: "Transaction tidak ditemukan"
+      });
+    }
+    let customerData = Customer.getSingleCustomerById(
+      currTransData.customer_id
+    );
+    if (customerData.balance < total) {
+      return restReturn(res, 400, true, { errorMessage: "Saldo tidak cukup" });
+    }
+    customerUpdate = {
+      balance: customerData.balance - total
+    };
+    Customer.updateCustomer(currTransData.customer_id, customerUpdate);
+    let subscriptionData = Subscription.getSingleSubscriptionById(
+      currTransData.subscription_id
+    );
+    let renewData = {
+      date_buy: currTransData.date_buy,
+      date_renew: getCurrentDate(),
+      date_expire: calculateExpireDate(
+        subscriptionData.duration,
+        getCurrentDate()
+      )
+    };
+    Transaction.updateTransaction(renewData);
+    return restReturn(res, 200, false, currTransData.id);
   }
 };
 

@@ -1,7 +1,7 @@
 const customers = [
   {
     customer_id: "1",
-    amount: 20000
+    amount: 500000
   },
   {
     customer_id: "0",
