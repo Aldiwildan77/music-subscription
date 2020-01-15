@@ -31,5 +31,12 @@ exports.get_all_subscription = (req, res) => {
 
 
 exports.get_subscription_info = (req, res) => {
-
+    Subscription.findById(req.params.id, (err, model) => {
+        if (err) {
+            res.send({
+                message: "subscription not found"
+            });
+        }
+        res.json(model)
+    });
 };
