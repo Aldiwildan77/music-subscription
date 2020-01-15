@@ -7,6 +7,8 @@ const Transaction = require('./src/models/Transaction');
 const bodyParser = require('body-parser');
 const customerRoute = require('./src/routes/customerRoutes');
 const subscriptionRoute = require('./src/routes/subscriptionRoutes');
+const transactionRoute = require('./src/routes/transactionRoutes');
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/Tododb', {
@@ -21,5 +23,6 @@ app.use(bodyParser.json());
 
 customerRoute.route(app);
 subscriptionRoute.route(app);
+transactionRoute.route(app);
 
 app.listen(3000);
