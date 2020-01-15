@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const Customer = require('./src/models/Customer');
 const bodyParser = require('body-parser');
 const customerRoute = require('./src/routes/customerRoutes');
 
