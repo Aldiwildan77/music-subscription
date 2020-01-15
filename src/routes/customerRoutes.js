@@ -5,15 +5,11 @@ exports.route = (app) => {
 
     app.route('/customer')
         .post(customer.register)
-        .put(customer.top_up);
-
-
-    app.route('/customer/:userId')
+        .put(customer.top_up)
         .get(customer.get_user_info);
 
 
-
-    app.route('/customer/debit/:userId')
+    app.route('/customer/debit')
         .put(customer.debit);
 
 };

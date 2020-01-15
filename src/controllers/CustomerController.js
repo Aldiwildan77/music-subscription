@@ -18,7 +18,7 @@ exports.register = (req, res) => {
 
 
 exports.get_user_info = (req, res) => {
-    Customer.findById(req.params.userId, (err, model) => {
+    Customer.findById(req.body.id, (err, model) => {
         if (err)
             res.send({
                 message: "user not found"
@@ -31,7 +31,7 @@ exports.get_user_info = (req, res) => {
 
 exports.top_up = (req, res) => {
     Customer.findById(req.body.id, (err, data) => {
-        data.balance += parseInt(req.body.balance);
+        data.balance += parseInt(req.body.amount);
 
         data.save((err, dataUpdated) => {
             if (err) res.send(err);
@@ -46,5 +46,22 @@ exports.top_up = (req, res) => {
 
 
 exports.debit = (req, res) => {
+    Customer.findById(req.body.id, (err, data) => {
+        if (req.body.amount > data.balance) {
+            res.send({
+                message: "balance is not enought"
+            });
+        } else {
+            data.balance -= parseInt(req.body.amount);
 
+            data.save((err, dataUpdated) => {
+                if (err) res.send(err);
+
+                res.json({
+                    message: "debit success",
+                    data: dataUpdated
+                });
+            });
+        }
+    });
 };
