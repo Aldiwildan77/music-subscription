@@ -48,3 +48,20 @@ exports.create_transaction = (req, res) => {
         }
     });
 };
+
+
+exports.get_all_transaction = (req, res) => {
+    Transaction.find({}, (err, models) => {
+        if (err || models.length) {
+            res.send({
+                message: "no transaction found"
+            })
+        }
+
+        res.json({
+            message: "success",
+            transaction_count: models.length,
+            data: models
+        });
+    });
+}
