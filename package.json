@@ -1,8 +1,6 @@
 {
   "name": "music-subscription",
   "version": "1.0.0",
-  "description": "![meme-programmer](https://cupheadmemes.com/wp-content/uploads/2018/08/Best-Programming-Memes-80.jpg)",
-  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -11,24 +9,9 @@
     "dev": "nodemon src/app",
     "test": "mocha -w"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Fakhri1999/music-subscription.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Fakhri1999/music-subscription/issues"
-  },
-  "homepage": "https://github.com/Fakhri1999/music-subscription#readme",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "knex": "^0.20.7",
-    "moment": "^2.24.0",
-    "mysql": "^2.17.1",
-    "mysql2": "^2.1.0"
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
