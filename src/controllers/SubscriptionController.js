@@ -15,3 +15,13 @@ exports.create_subscription = (req, res) => {
         });
     });
 };
+
+
+exports.get_all_subscription = (req, res) => {
+
+};
+
+
+exports.get_subscription_info = (req, res) => {
+
+};
