@@ -65,3 +65,18 @@ exports.get_all_transaction = (req, res) => {
         });
     });
 }
+
+
+exports.get_transaction_info = (req, res) => {
+    Transaction.findById(req.params.id, (err, model) => {
+        if (err || model == null) {
+            res.send({
+                message: "transaction not found"
+            });
+        }
+
+        res.json({
+            data: model
+        })
+    });
+}
