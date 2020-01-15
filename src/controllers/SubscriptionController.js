@@ -18,7 +18,15 @@ exports.create_subscription = (req, res) => {
 
 
 exports.get_all_subscription = (req, res) => {
+    Subscription.find({}, (err, models) => {
+        if (err || models.length) {
+            res.send({
+                message: "nothing subscription"
+            })
+        }
 
+        res.json(models);
+    });
 };
 
 
