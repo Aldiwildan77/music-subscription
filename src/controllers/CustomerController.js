@@ -9,7 +9,10 @@ exports.register = (req, res) => {
         if (err)
             res.send(err);
 
-        res.json(model);
+        res.json({
+            result: "succes create user",
+            data: model
+        });
     });
 };
 
@@ -27,7 +30,18 @@ exports.get_user_info = (req, res) => {
 
 
 exports.top_up = (req, res) => {
+    Customer.findById(req.body.id, (err, data) => {
+        data.balance += parseInt(req.body.balance);
 
+        data.save((err, dataUpdated) => {
+            if (err) res.send(err);
+
+            res.json({
+                message: "succes top up",
+                data: dataUpdated
+            })
+        });
+    });
 };
 
 
