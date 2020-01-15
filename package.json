@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon App.js"
   },
   "repository": {
     "type": "git",
