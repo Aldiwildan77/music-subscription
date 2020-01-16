@@ -37,7 +37,7 @@ exports.get_user_info = (req, res) => {
 
 
 exports.top_up = (req, res) => {
-    Customer.findById(req.body.id, (err, data) => {
+    Customer.findById(req.body.customer_id, (err, data) => {
         if (err || data == null) {
             res.send({
                 message: "field not valid"
@@ -51,7 +51,7 @@ exports.top_up = (req, res) => {
                     });
                 } else {
                     res.json({
-                        message: "succes top up",
+                        message: "success top up",
                         result: dataUpdated
                     })
                 }
@@ -69,7 +69,7 @@ exports.debit = (req, res) => {
             });
         } else if (req.body.amount > data.balance) {
             res.send({
-                message: "balance is not enought"
+                message: "balance is not enough"
             });
         } else {
             data.balance -= parseInt(req.body.amount);
