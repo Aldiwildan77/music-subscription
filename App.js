@@ -9,14 +9,47 @@ const customerRoute = require('./src/routes/customerRoutes');
 const subscriptionRoute = require('./src/routes/subscriptionRoutes');
 const transactionRoute = require('./src/routes/transactionRoutes');
 
+const DB_URI = 'mongodb://admin:Dp9KNJLuCNGTcoKV@cluster0-shard-00-00-uavp4.mongodb.net:27017,cluster0-shard-00-01-uavp4.mongodb.net:27017,cluster0-shard-00-02-uavp4.mongodb.net:27017/local_library?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
 
-var online = 'mongodb://admin:Dp9KNJLuCNGTcoKV@cluster0-shard-00-00-uavp4.mongodb.net:27017,cluster0-shard-00-01-uavp4.mongodb.net:27017,cluster0-shard-00-02-uavp4.mongodb.net:27017/local_library?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
+function connect() {
+    return new Promise((resolve, reject) => {
 
-mongoose.Promise = global.Promise;
-mongoose.connect(online, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+        if (process.env.NODE_ENV === 'test') {
+            const Mockgoose = require('mockgoose').Mockgoose;
+            const mockgoose = new Mockgoose();
+
+            mockgoose.prepareStorage()
+                .then(() => {
+                    mongoose.connect(DB_URI, {
+                            useNewUrlParser: true,
+                            useCreateIndex: true
+                        })
+                        .then((res, err) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve();
+                        });
+                })
+        } else {
+            mongoose.connect(DB_URI, {
+                    useNewUrlParser: true,
+                    useCreateIndex: true
+                })
+                .then((res, err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve();
+                });
+        }
+    });
+}
+
+function close() {
+    return mongoose.disconnect();
+}
+
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -31,3 +64,9 @@ subscriptionRoute.route(app);
 transactionRoute.route(app);
 
 app.listen(8000);
+
+module.exports = {
+    app,
+    connect,
+    close
+};
