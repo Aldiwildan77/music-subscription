@@ -12,6 +12,6 @@ exports.route = (app) => {
         .get(customer.get_user_info);
 
     app.route('/customer/debit')
-        .put(customer.debit);
+        .post(customer.debit);
 
 };
