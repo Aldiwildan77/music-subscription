@@ -30,7 +30,7 @@ exports.get_all_subscription = (req, res) => {
             res.json({
                 message: "success",
                 result_count: models.length,
-                result: models
+                results: models
             });
         }
     });
