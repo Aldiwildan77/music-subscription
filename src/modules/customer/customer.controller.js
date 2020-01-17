@@ -1,4 +1,4 @@
-const {createCustomer} = require('./customer.model');
+const {createCustomer, updateBalance} = require('./customer.model');
 
 module.exports = {
   register: (req, res) => {
@@ -27,5 +27,30 @@ module.exports = {
       })
     });
   },
+  topup: (req, res) => {
+    const {costumer_id, amount} = req.body;
 
+    if (!costumer_id || !amount) {
+      return res.status(422).json({
+        success: false,
+        data: null,
+        message: `Payload for topup balance are empty `
+      });
+    }
+
+    const params = req.body;
+    updateBalance(params, (error, result) => {
+      if (error)
+        return res.status(422).json({
+          success: false,
+          data: error,
+          message: `Failed to topup balance customer id ${costumer_id}`
+        });
+      return res.status(200).json({
+        success: true,
+        data: null,
+        message: `Success update balance for customer id ${costumer_id}`
+      })
+    });
+  },
 };
