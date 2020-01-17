@@ -26,4 +26,17 @@ module.exports = {
       }
     )
   },
+  getTransactionId: (data, callback) => {
+    connection.query(
+      `SELECT * FROM Transaction WHERE id = ?`,
+      [
+        data.transaction_id
+      ],
+      (error, result) => {
+        if (error)
+          callback(error);
+        callback(null, result);
+      }
+    )
+  }
 };
