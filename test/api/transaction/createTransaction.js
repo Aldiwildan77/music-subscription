@@ -23,7 +23,7 @@ describe('POST /transaction', () => {
         request(app).put('/customer')
             .send({
                 customer_id: "5e205ceced517140cc6a9759",
-                //amount: 60000
+                amount: 60000
             }).then((res) => {
                 const user = res.body.result;
                 const userBalance = user.balance;

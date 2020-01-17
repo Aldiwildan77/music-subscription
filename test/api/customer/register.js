@@ -22,9 +22,9 @@ describe('POST /customer', () => {
     it('OK, registering a new customer works', (done) => {
         request(app).post('/customer')
             .send({
-                name: 'hajir',
+                name: 'muhajir',
                 email: "hajir@gmail.com",
-                //phone: "0811"
+                phone: "0811"
             })
             .then((res) => {
                 const body = res.body.result;

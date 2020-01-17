@@ -22,7 +22,7 @@ describe('POST /subscription', () => {
     it('OK, create a new subscription works', (done) => {
         request(app).post('/subscription')
             .send({
-                // name: 'Gold',
+                name: 'Silver',
                 price: 60000,
                 duration: 15
             })

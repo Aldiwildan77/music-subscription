@@ -23,7 +23,7 @@ describe('PUT /customer', () => {
         request(app).put('/customer')
             .send({
                 customer_id: "5e20530b809eff43206c7652",
-                // amount: 30000
+                amount: 30000
             })
             .then((res) => {
                 const body = res.body;
