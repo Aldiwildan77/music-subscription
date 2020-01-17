@@ -30,4 +30,18 @@ module.exports = {
       }
     )
   },
+  debitBalance: (data, callback) => {
+    connection.query(
+      'UPDATE Customer SET balance = balance - ? WHERE id = ?',
+      [
+        parseInt(data.amount),
+        parseInt(data.costumer_id)
+      ],
+      (error, result) => {
+        if (error)
+          callback(error);
+        callback(null, result);
+      }
+    )
+  },
 };

@@ -1,4 +1,4 @@
-const {createCustomer, updateBalance} = require('./customer.model');
+const {createCustomer, updateBalance, debitBalance} = require('./customer.model');
 
 module.exports = {
   register: (req, res) => {
@@ -50,6 +50,32 @@ module.exports = {
         success: true,
         data: null,
         message: `Success update balance for customer id ${costumer_id}`
+      })
+    });
+  },
+  debit: (req, res) => {
+    const {costumer_id, amount} = req.body;
+
+    if (!costumer_id || !amount) {
+      return res.status(422).json({
+        success: false,
+        data: null,
+        message: `Payload for debit balance are empty `
+      });
+    }
+
+    const params = req.body;
+    debitBalance(params, (error, result) => {
+      if (error)
+        return res.status(422).json({
+          success: false,
+          data: error,
+          message: `Failed to debit balance customer id ${costumer_id}`
+        });
+      return res.status(200).json({
+        success: true,
+        data: null,
+        message: `Success debit balance for customer id ${costumer_id}`
       })
     });
   },
