@@ -27,4 +27,27 @@ module.exports = {
       });
     })
   },
+  subscription: (req, res) => {
+    getSubscription(null, (error, result) => {
+      if (error)
+        return res.status(422).json({
+          success: false,
+          data: error,
+          message: `Failed get subscription`
+        });
+
+      if (result.length === 0)
+        return res.status(204).json({
+          success: true,
+          data: [],
+          message: `Subscription data not found`
+        });
+
+      return res.status(200).json({
+        success: true,
+        data: result,
+        message: `Success get subscription`
+      });
+    })
+  },
 };

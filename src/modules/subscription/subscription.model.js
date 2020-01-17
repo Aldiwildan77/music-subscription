@@ -16,4 +16,18 @@ module.exports = {
       }
     )
   },
+  getSubscriptionId: (data, callback) => {
+    connection.query(
+      `SELECT * FROM Subscription WHERE id = ?`,
+      [
+        data.transaction_id
+      ],
+      (error, result) => {
+        if (error)
+          callback(error);
+        callback(null, result);
+      }
+    )
+  },
+
 };
