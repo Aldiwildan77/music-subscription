@@ -44,4 +44,17 @@ module.exports = {
       }
     )
   },
+  getCustomer: (data, callback) => {
+    connection.query(
+      `SELECT * FROM Customer WHERE id = ?`,
+      [
+        data.costumer_id
+      ],
+      (error, result) => {
+        if (error)
+          callback(error);
+        callback(null, result);
+      }
+    )
+  }
 };

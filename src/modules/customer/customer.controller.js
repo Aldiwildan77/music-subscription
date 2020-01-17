@@ -1,4 +1,4 @@
-const {createCustomer, updateBalance, debitBalance} = require('./customer.model');
+const {createCustomer, updateBalance, debitBalance, getCustomer} = require('./customer.model');
 
 module.exports = {
   register: (req, res) => {
@@ -79,4 +79,29 @@ module.exports = {
       })
     });
   },
+  getProfile: (req, res) => {
+    const {costumer_id} = req.params;
+    if (!costumer_id) {
+      return res.status(422).json({
+        success: false,
+        data: null,
+        message: `Payload for get customer are empty `
+      });
+    }
+
+    const params = req.params;
+    getCustomer(params, (error, result) => {
+      if (error)
+        return res.status(422).json({
+          success: false,
+          data: error,
+          message: `Failed to get profile with customer id ${costumer_id}`
+        });
+      return res.status(200).json({
+        success: true,
+        data: result,
+        message: `Success get profile with customer id ${costumer_id}`
+      })
+    });
+  }
 };

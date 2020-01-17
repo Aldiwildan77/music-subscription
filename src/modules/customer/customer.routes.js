@@ -4,5 +4,6 @@ const {register, topup, debit} = require('./customer.controller');
 router.post('/register', register);
 router.put('/topup', topup);
 router.put('/debit', debit);
+router.get('/profile/:costumer_id', getProfile);
 
 module.exports = router;
