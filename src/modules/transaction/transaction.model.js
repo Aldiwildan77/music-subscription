@@ -16,4 +16,14 @@ module.exports = {
       }
     )
   },
+  getTransaction: (data, callback) => {
+    connection.query(
+      `SELECT * FROM Transaction`,
+      (error, result) => {
+        if (error)
+          callback(error);
+        callback(null, result);
+      }
+    )
+  },
 };
